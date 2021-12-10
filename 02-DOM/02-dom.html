@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="./02-dom.js"></script>
+
+    <script>
+      const ul = document.createElement("ul");
+      document.body.append(ul);
+      ul.style.listStyle = "none";
+     
+      const li = document.createElement('li')
+      document.body.append(li)
+
+      for (let i = 0; i < 10; i++) {
+        const li = document.createElement("li");
+        ul.append(li);
+        li.style.color = "white";
+        li.innerText = wordGenerator();
+      }
+
+      // all list
+      const allLis = document.querySelectorAll('li')
+      console.log("🚀 ~ file: 02-dom.html ~ line 41 ~ allLis", allLis)
+      
+
+
+      //MOWING DOWNWARDS
+      // select children
+      // 1. parentElement.querySelector('li')
+
+      const childrenQS = ul.querySelectorAll('li')
+      console.log("🚀 ~ file: 02-dom.html ~ line 41 ~ childrenQS", childrenQS)
+
+      //2. element.children --> returns an html collection
+      // it needs to be converted to an array in order to be iterated
+
+      const children = ul.children
+      console.log("🚀 ~ file: 02-dom.html ~ line 53 ~ children", children)
+
+      const arrayFromChildren = Array.from(children)
+      arrayFromChildren.forEach(item => item.style.color = 'red')
+
+
+      // select parents MOVING UPWARDS
+      // 1element.parentElement
+      // a. select child
+
+      const fourthChild = arrayFromChildren[3]
+     
+      console.log("🚀 ~ file: 02-dom.html ~ line 65 ~ fourthChild", fourthChild)
+      console.log("Parent of fourthChild", fourthChild.parentElement)
+
+      // 2. element.closest('type of element')
+      // fourthChild.closest('div')
+
+      console.log("Closest DIV of fourthChild", fourthChild.closest('body'));
+
+
+      // select siblings - MOVING SIDEWAYS
+      // 1. element.nextElementSibling
+      console.log('fourthChild.nextElementSibling : ', fourthChild.nextElementSibling)
+
+      // 2 element.previousElementSibling
+      console.log('previousElementSibling : ', fourthChild.previousElementSibling)
+
+
+
+
+
+
+      //MORE EXAMPLE
+      const header = document.createElement('header')
+      document.body.append(header)
+
+      
+
+      
+
+
+      
+      
+    </script>
+  </body>
+</html>

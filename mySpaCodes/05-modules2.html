@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *, *::after, *::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-size: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <input type="file" >
+</body>
+
+<script>
+
+    const input = document.querySelector('input')
+    input.addEventListener('change', handleChange)
+
+    function handleChange(event) {
+
+        console.log('event is:', event.target.files[0])
+
+        // create a url from the file
+        const image = URL.createObjectURL(event.target.files[0])
+
+        console.log('image=', image)
+
+        const img = document.createElement('img')
+        document.body.append(img)
+        
+        // // 1. create an object from FileReader
+        // const reader = new FileReader()
+
+        // reader.onload = function(loadEvent) {
+        //     console.log('inside onload event:', loadEvent)
+        // }
+
+        img.src = image
+    }
+</script>
+</html>

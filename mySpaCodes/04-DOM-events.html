@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/d7444507ce.js" crossorigin="anonymous"></script>
+    <title>Document</title>
+
+    <style>
+        *, *::after, *::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-size: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <form>
+        <input type="text">
+        <input type="text">
+        <input name="input2" type="text">
+        <input id='input3' type="text">
+        <input type="submit">
+    </form>
+
+    <div class="container">
+
+        <input type="text" oninput="handleInput(event)"/>
+        <i class="fas fa-search"></i>
+    </div>
+    <img src="https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_960_720.jpg">
+
+    <script>
+        // styling body
+        const body = document.body
+        body.style.backgroundColor = 'black'
+        body.style.display = 'grid'
+        body.style.placeContent='center'
+        body.style.padding = '20px'
+
+        //style container
+        const container = document.querySelector('.container')
+        container.style.display = 'flex'
+        container.style.backgroundColor= 'red'
+        container.style.width = '300px'
+        container.style.height = '300px'
+
+        // style icon
+        const search = document.querySelector('.fa-search')
+        search.style.color = 'white'
+
+
+        // class Name {
+        //     constructor(variable) {
+
+        //     }
+        // }
+
+        // class Event {
+        //     constructor(variable) {
+        //         this.eventName = variable
+        //     }
+        // }
+
+        // For custom events:
+        // 1. create the event
+        const customEvent = new Event('igor', {bubbles: true})
+        // 2. add an event listener
+        body.addEventListener('igor', alertA)
+
+        function alertA() {
+            alert('He pressed an A')
+
+            // currentTarget is the element that has the listener (we usually need it)
+            // when the listener is at the parent element
+            event.currentTarget.removeEventListener('igor', alertA)
+        }
+
+        const input = container.querySelector('input')
+
+        function handleInput(event) {
+            // console.log('user typed:', event.target.value)
+
+            if (event.target.value.includes('a')) {
+                console.log('user typed A')
+                // 3. fire the custom event
+                event.target.dispatchEvent(customEvent)
+            }
+        }
+
+        // Bubbles demo
+        // body.addEventListener('click', () => console.log('Body heard a click - bubbles'))
+        // container.addEventListener('click', () => console.log('container heard a click'))
+        // search.addEventListener('click', () => console.log('icon heard a click'))
+
+        // Capture demo
+        // body.addEventListener('click', click, true)
+        // container.addEventListener('click', () => console.log('container heard a click - Capturing'), true)
+        // search.addEventListener('click', () => console.log('icon heard a click - Capturing'), true)
+
+        // function click() {console.log('Body heard a click - Capturing')}
+        // body.removeEventListener('click', click, true)
+
+        const img = document.querySelector('img')
+
+        img.addEventListener('mouseover', () => img.style.border = '5px solid red' )
+        img.addEventListener('mouseover', () => img.style.transform = 'scaleX(-1)' )
+        img.addEventListener('mouseout', () => {img.style.transform = 'scaleX(1)';img.style.border = 'none'})
+
+        let positionX = 0;
+        body.addEventListener('mousemove', handleMouseMove)
+
+        function handleMouseMove(event) {
+            
+            // console.log('Event is:', event.clientX)
+            
+            // current horizontal position of mouse
+            const currentPosX = event.clientX
+
+            if (currentPosX > positionX) { // movement to the right
+                img.style.transform = 'scaleX(-1)' // mirror image to the other side
+            } else {
+                img.style.transform = 'scaleX(1)'
+            }
+            
+            positionX = currentPosX
+        }
+
+        // Form operations
+        const form = document.querySelector('form')
+
+        console.log('form is:', form)
+
+        form.addEventListener('input', (event) => {
+            console.log(event.target.value)
+            console.log('Form[0]', form[0].value)
+            console.log('Form[4]', form[4].type)
+            console.log('Form[3]', form['input3'].value)
+            console.log('Form[2]', form['input2'].value)
+        })
+
+        form.addEventListener('submit', (event) => {
+            
+            event.preventDefault() // cancels the default action of the element
+            console.log('Form submited')
+            
+        })
+
+    </script>
+</body>
+</html>

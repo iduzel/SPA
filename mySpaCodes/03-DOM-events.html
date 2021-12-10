@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *, *::after, *::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            font-size: 2rem;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <!-- <button onclick="handleButtonClick()">Submit</button> -->
+    <button onclick="handleButtonClick(event, this)">Submit</button>
+
+    <div class="mainDiv">
+        <p>Lorem ipsum dolor sit amet.</p>
+    </div>
+
+    <script>
+        // onclick is an object property -> 
+        // addEventListener('click', handleMainClick, true) // useCapture
+
+
+        const body = document.body
+        body.style.display = 'grid'
+        body.style.placeContent = 'center'
+        body.style.minHeight = '100vh'
+        const mainDiv = document.querySelector('.mainDiv')
+
+        mainDiv.style.width = '300px'
+        mainDiv.style.height = '300px'
+        mainDiv.style.background = 'black'
+        mainDiv.style.color = 'white'
+
+        // Event propagation: to spread the news to other elements
+
+        mainDiv.addEventListener('click', handleMainClick, true) // useCapture
+        mainDiv.addEventListener('click', () => console.log('Main div clicked 2nd listener'), true) // useCapture
+        mainDiv.addEventListener('click', () => console.log('Main div clicked 3rd listener'), true) // useCapture
+
+        body.addEventListener('click', bodyListener, true)
+
+        function bodyListener() {console.log('Body CLicked')}
+
+        function handleButtonClick(e, el) {
+            console.log('Handle Button Click: Button Clicked')
+            console.log('Event is: ', e)
+            console.log('Element is: ', el)
+
+        }
+
+        const p = mainDiv.querySelector('p')
+        p.addEventListener('click', () => console.log('Para clicked'), true)
+
+        function handleMainClick() {
+            console.log('Main Div Clicked')
+        }
+
+        const users = [
+            {name: 'alkis', age: 32, address: 'berlin'},
+            {name: 'muhasin', age: 33, address: 'berlin'},
+            {name: 'igor', age: 34, address: 'berlin'},
+            {name: 'tanya', age: 35, address: 'berlin'},
+            {name: 'chris', age: 36, address: 'berlin'},
+        ]
+
+        const userContainer = document.createElement('div')
+        document.body.append(userContainer)
+
+        // for event bubling no need for 3rd argument. otherwise add a 'true'
+        userContainer.addEventListener('click', handleDelete)
+
+        for (let i = 0; i < users.length; i++) {
+            const row = document.createElement('div')
+            userContainer.append(row)
+            row.style.display = 'flex'
+            row.className = 'b' + i
+
+            const userName = document.createElement('div')
+            row.append(userName)
+            userName.innerText = users[i].name
+            userName.style.marginRight = '20px'
+
+            const userAge = document.createElement('div')
+            row.append(userAge)
+            userAge.innerText = users[i].age
+            userAge.style.marginRight = '20px'
+
+            const userAddress = document.createElement('div')
+            row.append(userAddress)
+            userAddress.innerText = users[i].address
+            userAddress.style.marginRight = '20px'
+
+            const button = document.createElement('button')
+            row.append(button)
+            button.textContent = 'Delete'
+            button.id = 'b' + i
+
+            // button.addEventListener('click', handleDelete)
+
+
+        }
+
+        function handleDelete(event) {
+            console.log('delete button clicked')
+            console.log('Event is:', event.target.id)
+
+            // to delete a row
+            // 1. get the id of the row
+  
+            // 2. get a handler for the row const row = document.querySelector
+            const row = userContainer.querySelector('.' + event.target.id)
+            console.log('Row is', row)
+            // 3. handler.remove()
+            row.remove()
+
+            userContainer.removeEventListener('click', handleDelete)
+            // body.addEventListener('click', () => console.log('Body Clicked'), true)
+            // the removeEventListener requires that at the addEventListener, named function has been used
+            // and not anonymous (arrow or anything)
+            body.removeEventListener('click', bodyListener, true)
+        }
+
+    </script>
+</body>
+</html>

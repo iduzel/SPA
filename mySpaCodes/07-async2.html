@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function getData() {
+        const url =
+          'http://hn.algolia.com/api/v1/search?query="a"&hitsPerPage=50';
+
+        fetch(url)
+          .then((data) => data.json())
+          .then((data) => {
+            console.log("DATA HITS ARE : ", data.hits);
+            renderData(data.hits);
+          });
+      }
+
+      getData();
+
+      async function getDataAsync() {
+        const url =
+          'http://hn.algolia.com/api/v1/search?query="a"&hitsPerPage=50';
+
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+        } catch (err) {}
+      }
+
+
+      async function getUser() {
+
+const url = 'http://hn.algolia.com/api/v1/users/'
+
+try {
+    const response = await fetch(url)
+    const data = await response.json()
+} catch (err) {
+
+}
+}
+
+
+      async function renderData(articles) {
+        articles.forEach((article) => {
+          const h3 = document.createElement("h3");
+          h3.innerText = article.title;
+
+          const a = document.createElement("a");
+          a.href = article.url;
+          a.append(h3);
+          a.target = "blank";
+          document.body.append(a);
+
+          const p = document.createElement("p");
+          p.innerText = article.num_comments + " comments";
+          document.body.append(p);
+          p.style.cursor = "pointer";
+          p.onclick = () => getComments(article);
+        });
+      }
+
+      // async / await
+      async function getComments(article) {
+        // gets the comments from the api
+        const url = `http://hn.algolia.com/api/v1/search?tags=comment,story_${article.objectID}`;
+
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          console.log(data);
+          renderModal(data.hits);
+        } catch (error){
+                if (error.message === 'Failed to fetch') alert('Wrong ip address')
+                console.log(error.message)
+            }
+
+        //  SAME
+        /*  fetch(url)
+            .then(data => data.json())
+            .then(data => {
+                console.log(data)
+               
+            }) */
+      }
+
+      function renderModal(comments) {
+        // opens a model window with the commentsconst
+        const modal = document.createElement("div");
+        document.body.append(modal);
+        modal.style.position = "fixed";
+        modal.style.top = "0";
+        modal.style.left = "0";
+        modal.style.backgroundColor = "rgba(0,0,0,0.4)";
+        modal.style.width = "100%";
+        modal.style.height = "100%";
+        modal.style.display = "grid";
+        modal.style.placeContent = "center";
+
+        const div = document.createElement("div");
+        div.style.width = "300px";
+        div.style.height = "500px";
+        modal.append(div);
+        div.style.background = "pink";
+
+        modal.onclick = function () {
+          modal.style.display = "none";
+        };
+
+        div.style.overflowY = "auto";
+
+        comments.forEach(comment => {
+                const text = document.createElement('div')
+                div.append(text)
+                text.innerText = comment.comment_text
+            })
+
+      }
+    </script>
+  </body>
+</html>

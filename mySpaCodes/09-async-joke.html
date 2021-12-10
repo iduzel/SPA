@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *, *::after,*::before {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: grid;
+            background-color: black;
+            place-content: center;
+            min-height: 100vh;
+        }
+        button {
+            height: 40px;
+            width: 200px;
+            background: white;
+            border: none;
+        }
+    </style> 
+</head>
+<body>
+    <button onclick="generateJoke()">Generate Joke</button>
+
+    <script>
+       async function generateJoke() {
+
+            const url = "https://icanhazdadjoke.com/"
+            const config = {
+                headers: {
+                    Accept: 'application/json'
+                }
+            }
+
+            try {
+                const response = await fetch(url, config)
+                const data = await response.json()
+                console.log('data is ', data)
+
+                const h3 = document.createElement('h3')
+                document.body.append(h3)
+                h3.style.color = 'white'
+                h3.style.textAlign = 'center'
+                h3.innerText = data.joke
+
+
+            } catch (error) {
+                //error is an object. It is the errorobject
+                console.log('Error', error)
+            }
+        }
+    </script>
+</body>
+</html>
